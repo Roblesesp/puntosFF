@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contador de puntos - Free Fire</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #f5f5f5;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+      color: #ffcc00;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+
+    input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background: #252525;
+      color: #f5f5f5;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #ff5722;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e64a19;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffcc00;
+    }
+
+    .table-container {
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #444;
+      text-align: center;
+      background: #1e1e1e;
+      color: #f5f5f5;
+    }
+
+    th {
+      background-color: #252525;
+    }
+
+    #toggleButton {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    #toggleButton:hover {
+      background-color: #0056b3;
+    }
+
+    #contentDiv {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #444;
+      background-color: #1e1e1e;
+      border-radius: 5px;
+      display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      input {
+        font-size: 14px;
+      }
+
+      button {
+        font-size: 14px;
+      }
+
+      table, th, td {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Contador de puntos</h1>
+    <button id="toggleButton">Configurar</button>
+    <div id="contentDiv">
+     
+  
+    <label for="kill-points">Puntos por Kill:</label>
+    <input type="number" id="kill-points" placeholder="Ejemplo: 10" />
+
+    <div class="position-points-container">
+      <h3>Puntos por Posición (1° a 10°)</h3>
+      <div id="position-points-list"></div>
+      <button onclick="agregarPosicion()">Agregar Posición</button>
+      <button onclick="guardarConfiguracion()">Guardar Configuración</button>
+    </div>
+  </div>
+    <label for="player-name">Nombre del Clan:</label>
+    <input type="text" id="player-name" placeholder="Underfire" />
+
+    <label for="kills">Cantidad de Kills:</label>
+    <input type="number" id="kills" placeholder="Ejemplo: 3" />
+
+    <label for="position">Posición Obtenida:</label>
+    <input type="number" id="position" placeholder="Ejemplo: 1" />
+
+    
+    <button onclick="calcularPuntos()">Calcular Puntos</button>
+    <button onclick="reiniciarResultados()">Reiniciar Resultados</button>
+
+    <div class="result" id="result"></div>
+
+    <div class="table-container">
+      <h3>Resultados Guardados</h3>
+      <table id="results-table">
+        <thead>
+          <tr>
+            <th>Posición</th>
+            <th>Nombre</th>
+            <th>Kills</th>
+            <th>Puntos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Resultados dinámicos -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const positionPointsList = document.getElementById('position-points-list');
+    const resultsTableBody = document.querySelector('#results-table tbody');
+    let posiciones = JSON.parse(localStorage.getItem('posiciones')) || 10; // Número de posiciones
+    let resultados = JSON.parse(localStorage.getItem('resultados')) || []; // Resultados guardados
+
+    function cargarDatos() {
+      const puntosPorKill = localStorage.getItem('puntosPorKill');
+      if (puntosPorKill) {
+        document.getElementById('kill-points').value = puntosPorKill;
+      }
+
+      for (let i = 1; i <= posiciones; i++) {
+        const puntosPorPosicion = localStorage.getItem(`position-${i}`);
+        if (puntosPorPosicion) {
+          document.getElementById(`position-${i}`).value = puntosPorPosicion;
+        }
+      }
+      mostrarResultados();
+    }
+
+    function guardarConfiguracion() {
+      const puntosPorKill = document.getElementById('kill-points').value;
+      localStorage.setItem('puntosPorKill', puntosPorKill);
+
+      for (let i = 1; i <= posiciones; i++) {
+        const puntosPorPosicion = document.getElementById(`position-${i}`).value;
+        localStorage.setItem(`position-${i}`, puntosPorPosicion);
+      }
+
+      localStorage.setItem('posiciones', posiciones);
+      alert('¡Configuración guardada correctamente!');
+    }
+
+    function generarInputsDePosicion() {
+      positionPointsList.innerHTML = '';
+      for (let i = 1; i <= posiciones; i++) {
+        const input = document.createElement('div');
+        input.innerHTML = `
+          <label for="position-${i}">Puntos para posición ${i}:</label>
+          <input type="number" id="position-${i}" placeholder="Ejemplo: ${10 - i + 1}" />
+        `;
+        positionPointsList.appendChild(input);
+      }
+      cargarDatos();
+    }
+
+    function agregarPosicion() {
+      posiciones++;
+      generarInputsDePosicion();
+    }
+
+    function calcularPuntos() {
+      const playerName = document.getElementById('player-name').value.trim();
+      if (!playerName) {
+        alert('Por favor, ingresa el nombre del jugador.');
+        return;
+      }
+
+      const puntosPorKill = parseFloat(document.getElementById('kill-points').value) || 0;
+      const kills = parseInt(document.getElementById('kills').value) || 0;
+      const posicion = parseInt(document.getElementById('position').value) || 0;
+
+      if (posicion < 1 || posicion > posiciones) {
+        alert('La posición ingresada no es válida.');
+        return;
+      }
+
+      const puntosPorPosicion = parseFloat(document.getElementById(`position-${posicion}`).value) || 0;
+      const totalPuntos = (kills * puntosPorKill) + puntosPorPosicion;
+
+      resultados.push({ nombre: playerName, kills, puntos: totalPuntos });
+      resultados.sort((a, b) => b.puntos - a.puntos);
+      localStorage.setItem('resultados', JSON.stringify(resultados));
+
+      mostrarResultados();
+    }
+
+    function mostrarResultados() {
+      resultsTableBody.innerHTML = '';
+      resultados.forEach((resultado, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${resultado.nombre}</td>
+          <td>${resultado.kills}</td>
+          <td>${resultado.puntos}</td>
+        `;
+        resultsTableBody.appendChild(row);
+      });
+    }
+
+    generarInputsDePosicion();
+
+    function reiniciarResultados() {
+        if (confirm('¿Estás seguro de que quieres reiniciar los resultados?')) {
+            resultados = [];
+            localStorage.removeItem('resultados'); // Elimina los resultados de localStorage
+            mostrarResultados(); // Refresca la tabla
+            alert('Los resultados han sido reiniciados.');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.getElementById('toggleButton');
+    const contentDiv = document.getElementById('contentDiv');
+
+    toggleButton.addEventListener('click', () => {
+        if (contentDiv.style.display === 'none' || contentDiv.style.display === '') {
+            contentDiv.style.display = 'block';
+            toggleButton.textContent = 'Ocultar';
+        } else {
+            contentDiv.style.display = 'none';
+            toggleButton.textContent = 'Configurar';
+        }
+    });
+});
+
+  </script>
+</body>
+</html>
