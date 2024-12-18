@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados Editables</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    /* Estilos generales */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      max-width: 500px;
+      border-radius: 20px;
+      padding: 20px 0px;
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #FFD700; /* El color dorado para el texto */
+    margin: auto;
+    margin-bottom: 15px;
+    text-align: center;
+    
+    
+
+    /* Sombra para dar profundidad y volumen */
+    text-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.3),   /* Sombra grande para profundidad */
+        0 2px 3px rgba(0, 0, 0, 0.2),   /* Sombra más suave */
+        0 1px 2px rgba(0, 0, 0, 0.2);   /* Sombra leve */
+}
+    
+    .contenido{
+      max-width: 700px;
+      margin: auto;
+      text-align: center;
+  padding: 50px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 60%;
+      background-color: transparent;
+      border: 1px solid #333;
+      color: #000000;
+      margin-bottom: 20px;
+      margin: auto;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border: 1px solid #333;
+    }
+
+    th {
+      background-color:transparent;
+    }
+
+    tr:nth-child(even) {
+      background-color: transparent;
+    }
+
+    tr:hover {
+      background-color: transparent;
+    }
+
+    input {
+      background-color: inherit;
+      color: #000000;
+      border: none;
+      width: 100%;
+      text-align: center;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 5px #00bcd4;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #00bcd4;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0097a7;
+    }
+  </style>
+</head>
+<body>
+  <div id="contenido" class="contenido">
+  <!-- Título editable -->
+  <h1 contenteditable="true" class="golden-text">Resultados Editables</h1>
+
+  <div id="tablaContenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>Posición</th>
+          <th>Nombre</th>
+          <th>Kills</th>
+          <th>Puntos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" value="1"></td>
+          <td><input type="text" value="LM"></td>
+          <td><input type="text" value="12"></td>
+          <td><input type="text" value="20"></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="2"></td>
+          <td><input type="text" value="O4"></td>
+          <td><input type="text" value="7"></td>
+          <td><input type="text" value="19"></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="3"></td>
+          <td><input type="text" value="UND"></td>
+          <td><input type="text" value="8"></td>
+          <td><input type="text" value="19"></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="4"></td>
+          <td><input type="text" value="AL"></td>
+          <td><input type="text" value="3"></td>
+          <td><input type="text" value="18"></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="5"></td>
+          <td><input type="text" value="EXP"></td>
+          <td><input type="text" value="4"></td>
+          <td><input type="text" value="11"></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="6"></td>
+          <td><input type="text" value="GK"></td>
+          <td><input type="text" value="4"></td>
+          <td><input type="text" value="9"></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="7"></td>
+          <td><input type="text" value="SM"></td>
+          <td><input type="text" value="2"></td>
+          <td><input type="text" value="8"></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="8"></td>
+          <td><input type="text" value="TF"></td>
+          <td><input type="text" value="1"></td>
+          <td><input type="text" value="5"></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="9"></td>
+          <td><input type="text" value="FX"></td>
+          <td><input type="text" value="2"></td>
+          <td><input type="text" value="5"></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="10"></td>
+          <td><input type="text" value="LH"></td>
+          <td><input type="text" value="0"></td>
+          <td><input type="text" value="2"></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="11"></td>
+          <td><input type="text" value="SD"></td>
+          <td><input type="text" value="1"></td>
+          <td><input type="text" value="2"></td>
+        </tr>
+        <tr>
+          <td><input type="text" value="12"></td>
+          <td><input type="text" value="RN"></td>
+          <td><input type="text" value="0"></td>
+          <td><input type="text" value="1"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+<button id="descargarPNG">Descargar imagen</button>
+<a href="index.html">inicio</a>
+
+<script>
+ document.getElementById("descargarPNG").addEventListener("click", () => {
+      const contenido = document.getElementById("contenido"); // Selecciona el div
+
+      html2canvas(contenido).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png"); // Genera el PNG
+
+        // Crea un enlace temporal para descargar la imagen
+        const enlace = document.createElement("a");
+        enlace.href = imgData;
+        enlace.download = "contenido.png"; // Nombre del archivo
+        enlace.click(); // Simula un clic en el enlace
+      });
+    });
+</script>
+
+
+</body>
+</html>
